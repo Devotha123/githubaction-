@@ -5,12 +5,11 @@ on:
     branches:
       - main
       - dev
-
-    pull_request:
-      brannches:[main, dev]      
+  pull_request:
+      branches: [main, dev]      
     
-    schedule: 
-      - cron: "*/1 * * * *"   
+    # schedule:
+        # -cron:"*/1* * * *"
 
 jobs:
     
@@ -27,11 +26,17 @@ jobs:
           run: cat README.md    
            
   build_job:
+    needs:
+      - setup_job
+      - deploy_job
+
+   
     runs-on: windows-latest
     steps:
         - name: echo "hello"
           run: echo hello
   deploy_job:
+    needs: setup_job
     runs-on: macos-latest
     steps:
       - name: echo hello mac
